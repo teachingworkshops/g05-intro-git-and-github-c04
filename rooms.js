@@ -38,11 +38,21 @@ let rooms = {
           name: 'South',
           description: 'a passageway back',
           value: {
-            dest: 'firstRoom',
+            dest: 'startRoom',
             travel_text: 'you return to the clearing where you awakened'
           }
         }
       ],
+      look: [
+        {
+          name: 'Around',
+          value: 'You find yourself in a small clearing. A shrine sits in the center. You feel at peace.'
+        },
+        {
+          name: 'Shrine',
+          value: 'You examine the shrine. It is overgrown with foliage but otherwise undisturbed.'
+        }
+      ]
     }
   }
 };
