@@ -1,5 +1,6 @@
 import { addItemToInventory } from './actions.js';
 import loot from './loot.js';
+let chestOpen = false;
 
 let rooms = {
   /*
@@ -155,6 +156,8 @@ let rooms = {
     }
   },
 
+
+
   room3: (state) => {
     console.log('') //Adds a spacing to make the text easier to read
     return {
@@ -178,6 +181,7 @@ let rooms = {
           name: 'Chest',
           value: () => {
             console.log('The chest is unlocked. You found gold inside! ')
+            chestOpen = true;
             addItemToInventory(loot.gold, state);
           }
         }
