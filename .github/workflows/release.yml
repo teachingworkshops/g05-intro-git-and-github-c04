@@ -1,0 +1,37 @@
+name: Build Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - release
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: release
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        # uses: denoland/setup-deno@61fe2df320078202e33d7d5ad347e7dcfa0e8f31  # v1.1.2
+        with:
+          deno-version: v1.x
+
+      - name: Compile executables
+        run: build_release.sh
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            text-adventure-c04-linux
+            text-adventure-c04-win.exe
+          target_commitish: release
