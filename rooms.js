@@ -2,6 +2,8 @@ import { addItemToInventory } from './actions.js';
 import loot from './loot.js';
 let chestOpen = false;
 
+
+
 let rooms = {
   /*
   roomTemp: (state) => {
@@ -180,9 +182,16 @@ let rooms = {
         {
           name: 'Chest',
           value: () => {
-            console.log('The chest is unlocked. You found gold inside! ')
-            chestOpen = true;
-            addItemToInventory(loot.gold, state);
+            if (!chestOpen) {
+
+              
+              console.log('The chest is unlocked. You found gold inside! ')
+              chestOpen = true;
+              addItemToInventory(loot.gold, state);
+            }
+            else{
+              console.log('You stare at the empty open chest')
+            }
           }
         }
       ]
