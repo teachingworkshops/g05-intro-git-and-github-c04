@@ -1,3 +1,5 @@
+let chest = false;
+
 let loot = {
     gold: {
       name: 'Gold',
