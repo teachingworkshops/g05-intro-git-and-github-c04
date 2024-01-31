@@ -3,13 +3,19 @@ import { select, Separator } from '@inquirer/prompts';
 export async function look(instance, state) {
   let item = await select({
     message: 'What are you looking at?',
-    choices: instance.look
+    choices: [
+      ...instance.look,
+      new Separator(),
+      { name: 'Cancel', value: 'cancel' }
+    ]
   });
+
+  if (item === 'cancel') return;
 
   //Check if item is a function or a string
   if (typeof item === 'function') {
     //If item is a function, execute it
-    console.log(item(state));
+    item(state);
   } else if (typeof item === 'string') {
     //If item is a string, log it directly
     console.log(item);
@@ -21,8 +27,14 @@ export async function look(instance, state) {
 export async function go(instance, state) {
   let movement = await select({
     message: 'Where are you going',
-    choices: instance.go
+    choices: [
+      ...instance.go,
+      new Separator(),
+      { name: 'Cancel', value: 'cancel' }
+    ]
   })
+
+  if (movement === 'cancel') return;
 
   console.log(movement.travel_text);
 

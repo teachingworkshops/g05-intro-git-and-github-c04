@@ -44,4 +44,9 @@ async function gameLoop() {
   }
 }
 
-await gameLoop();
+try {
+  await gameLoop();
+} catch (err) {
+  console.log("Error, stopping program.");
+  process.exit(1);
+}
