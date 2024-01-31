@@ -1,7 +1,7 @@
 {
   "name": "text-adventure-c04",
   "version": "1.0.0",
-  "description": "",
+  "description": "A cool text adventure for Software Engineering Class",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

@@ -179,7 +179,7 @@ let rooms = {
           value: () => {
             console.log('The chest is unlocked. You found gold inside! ')
             addItemToInventory(loot.gold, state);
-          } 
+          }
         }
       ]
     }
@@ -558,6 +558,7 @@ function handleBandits(state) {
   if (goldIndex !== -1) {
     state.inventory.splice(goldIndex, 1);
     console.log("You give one gold to the bandits. They let you go.");
+    console.log('You find a caravan and return home safely.\n\nYou win!');
   } else {
     console.log("You have no gold to give. The bandits attack!");
     console.log("Game Over");
