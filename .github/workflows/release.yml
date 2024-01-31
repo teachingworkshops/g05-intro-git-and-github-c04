@@ -3,8 +3,6 @@ name: Build Release
 on:
   workflow_dispatch:
   push:
-    branches:
-    - release
     tags:
     - "v*.*.*"
 
@@ -18,8 +16,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: release
 
       - name: Setup Deno
         uses: denoland/setup-deno@v1
@@ -36,4 +32,3 @@ jobs:
           files: |
             text-adventure-c04-linux
             text-adventure-c04-win.exe
-          target_commitish: release
