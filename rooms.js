@@ -1,3 +1,6 @@
+import { addItemToInventory } from './actions.js';
+import loot from './loot.js';
+
 let rooms = {
   /*
   roomTemp: (state) => {
@@ -173,7 +176,10 @@ let rooms = {
         },
         {
           name: 'Chest',
-          value: 'The chest is unlocked! You take the contents of the chest.' //Feel free to change this to add an item
+          value: () => {
+            console.log('The chest is unlocked. You found gold inside! ')
+            addItemToInventory(loot.gold, state);
+          } 
         }
       ]
     }
@@ -538,12 +544,25 @@ let rooms = {
       look: [
         {
           name: 'Around',
-          value: 'You find yourself at the caravan camp. Traders and travelers are having a small discussion lit by the flame of a campfire.'
+          value: () => handleBandits(state) //Handles bandit attack.
         }
       ]
     }
   }
 
 };
+
+//Bandits attack. Removes gold from inventory if gold > 0
+function handleBandits(state) {
+  const goldIndex = state.inventory.findIndex(item => item.name === 'Gold');
+  if (goldIndex !== -1) {
+    state.inventory.splice(goldIndex, 1);
+    console.log("You give one gold to the bandits. They let you go.");
+  } else {
+    console.log("You have no gold to give. The bandits attack!");
+    console.log("Game Over");
+    process.exit();
+  }
+}
 
 export default rooms;

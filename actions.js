@@ -6,7 +6,16 @@ export async function look(instance, state) {
     choices: instance.look
   });
 
-  console.log(item);
+  //Check if item is a function or a string
+  if (typeof item === 'function') {
+    //If item is a function, execute it
+    console.log(item(state));
+  } else if (typeof item === 'string') {
+    //If item is a string, log it directly
+    console.log(item);
+  } else {
+    console.log("Invalid selection.");
+  }
 }
 
 export async function go(instance, state) {
@@ -33,6 +42,16 @@ export async function handleAction(action, instance, state) {
   }
 }
 
+export function addItemToInventory(item, state) {
+  state.inventory.push(item);
+  console.log(`${item.name} was added to your inventory.`);
+}
+
+export async function viewInventory(state) {
+  console.log("Inventory:");
+  state.inventory.forEach(item => console.log(item.name));
+}
+
 export let actionList = [
   {
     name: 'Look',
@@ -41,5 +60,9 @@ export let actionList = [
   {
     name: 'Go',
     value: 'go',
+  },
+  {
+    name: 'View Inventory',
+    value: 'inventory',
   },
 ];

@@ -1,10 +1,11 @@
 import { select, Separator } from '@inquirer/prompts';
 import rooms from './rooms.js';
-import { go, look } from './actions.js';
+import { go, look, viewInventory } from './actions.js';
 
 // track what rooms have been seen for easy text variation?
 let state = {
-  currentRoom: 'startRoom'
+  currentRoom: 'startRoom',
+  inventory: []
 };
 
 async function gameLoop() {
@@ -22,6 +23,10 @@ async function gameLoop() {
           name: 'Go',
           value: 'go',
         },
+        {
+          name: 'View Inventory',
+          value: 'inventory',
+        },
       ]
     });
 
@@ -31,6 +36,9 @@ async function gameLoop() {
         break;
       case 'go':
         await go(instance, state);
+        break;
+      case 'inventory':
+        viewInventory(state);
         break;
     }
   }
