@@ -55,7 +55,7 @@ async function gameLoop() {
 
 gameLoop().catch(reason => {
   console.log("Error, stopping program.");
-  console.error(reason);
+  // console.error(reason);
   Deno && Deno.exit(1);
   process.exit(1);
 });
