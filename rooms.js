@@ -256,6 +256,7 @@ let rooms = {
               console.log('As you approach the cat, it stands up and speaks!')
               console.log('"Oh, hello there, I suppose you want to get out of the forest? Well, I suppose I could show you through the fog to the east, but I\'d want something for my efforts.');
               console.log('You certainly wont\'t make it far without me."');
+              state.catQuestAccepted = true;
             } else if (state.catQuestAccepted && state.catQuestCompleted) {
               console.log('"Don\'t bother me unless you want to Go somewhere."')
             } else if (state.catQuestAccepted && creamIndex === -1) {
