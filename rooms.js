@@ -208,7 +208,7 @@ let rooms = {
   room4: (state) => {
     let eastTravel = {
       dest: 'room4',
-      travel_text: 'You go further East.',
+      travel_text: 'You attempt to travel east, but get lost and end up back at the crossroads.',
     };
 
     if (state.catQuestAccepted && state.catQuestCompleted) {
