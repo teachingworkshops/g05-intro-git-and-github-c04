@@ -40,6 +40,11 @@ export async function go(instance, state) {
   console.log(movement.travel_text);
 
   state.currentRoom = movement.dest;
+
+  if (typeof movement.action == 'function') {
+    movement.action(state);
+  }
+
   return true;
 }
 

@@ -5,6 +5,10 @@ let loot = {
     name: 'Gold',
     description: 'Shiny gold coins.'
   },
+  cream: {
+    name: 'Cream',
+    description: 'Bottle of Cream. Loved by cats.'
+  }
   //More loot here
 };
 

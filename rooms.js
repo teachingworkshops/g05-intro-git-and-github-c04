@@ -206,17 +206,25 @@ let rooms = {
   },
 
   room4: (state) => {
+    let eastTravel = {
+      dest: 'room4',
+      travel_text: 'You go further East.',
+    };
+
+    if (state.catQuestAccepted && state.catQuestCompleted) {
+      eastTravel = {
+        dest: 'room8',
+        travel_text: 'You are led through the fog by the cat.'
+      };
+    }
 
     return {
-      description: 'You find yourself in a three way fork in the path.',
+      description: 'You find yourself in a three way fork in the path. A cat is sunning itself on a rock.',
       go: [
         {
           name: 'East',
-          description: 'A pathway deeper into the forest going East.', //Add a puzzle here!
-          value: {
-            dest: 'room8',
-            travel_text: 'You go further East.'
-          }
+          description: 'A pathway blocked by an impenetrable fog.', //Add a puzzle here!
+          value: eastTravel
         },
         {
           name: 'West',
@@ -238,7 +246,28 @@ let rooms = {
       look: [
         {
           name: 'Around',
-          value: 'The forest is dark and confusing. You see three paths that you can take.'
+          value: 'The forest is dark and confusing. You see three paths that you can take.\n A thick fog is to the east, and the road looks dilapidated. A cat is sunning itself on a rock next to the sign.'
+        },
+        {
+          name: 'Cat',
+          value: () => {
+            let creamIndex = state.inventory.indexOf(loot.cream);
+            if (!state.catQuestAccepted) {
+              console.log('As you approach the cat, it stands up and speaks!')
+              console.log('"Oh, hello there, I suppose you want to get out of the forest? Well, I suppose I could show you through the fog to the east, but I\'d want something for my efforts.');
+              console.log('You certainly wont\'t make it far without me."');
+            } else if (state.catQuestAccepted && state.catQuestCompleted) {
+              console.log('"Don\'t bother me unless you want to Go somewhere."')
+            } else if (state.catQuestAccepted && creamIndex === -1) {
+              console.log('The cat opens an eye to glare at you. "Have you brought anything worth my while? Then leave me to my nap!"');
+            } else if (state.catQuestAccepted && creamIndex > -1) {
+              console.log('"Is that cream I smell? Give it here!"')
+              console.log('The cat takes the bottle of cream and hides it away somewhere. When you ask where it went, the cat simply says: "The Sock Dimension", as if it explains everything.');
+              console.log('"I suppose I can show you the way now. Let me know when you want to go East."');
+              state.inventory.splice(creamIndex, 1);
+              state.catQuestCompleted
+            }
+          }
         }
       ]
     }
@@ -300,7 +329,13 @@ let rooms = {
       look: [
         {
           name: 'Around',
-          value: 'You find a farmer! He greats you with a smile.' //Add something here maybe?
+          value: (state) => {
+            console.log('You find a farmer! He greats you with a smile.');
+            if (state.catQuestAccepted && !state.catQuestCompleted) {
+              console.log('You ask the farmer if he has anything a cat would like, and you help with chores for a while in exchange for a bottle of cream.');
+              addItemToInventory(loot.cream, state);
+            }
+          }
         }
       ]
     }
@@ -320,12 +355,15 @@ let rooms = {
           }
         },
         {
-          name: 'South',
+          name: 'South (One way)',
           // maybe move this character to room 4 and have the puzzle there be getting ingredient from farmer
-          description: 'A witch offers a familiar to guide you closer to your destination.',
+          description: 'Jump off the cliff to the south',
           value: {
             dest: 'room8',
-            travel_text: 'You agree to the witchs terms and a small raven leads you South.'
+            travel_text: 'You jump off the cliff, landing in the river below. You manage to pull yourself out, and find that the river becomes a moat around a castle.',
+            action: (state) => {
+              state.jumpedCliff = true;
+            },
           }
         }
       ],
@@ -333,12 +371,32 @@ let rooms = {
         {
           name: 'Around',
           value: 'You find yourself in the small cottage. A stinky broth is brewing over the fireplace. A witch appears before you and offers you a deal' //Add something here!
+        },
+        {
+          name: 'River',
+          value: 'The river runs of the cliff to the south, leading to a castle.'
         }
       ]
     }
   },
 
   room8: (state) => {
+    let westTravel = {
+      dest: 'room8',
+      travel_text: 'You get lost in the fog, and find yourself back at the castle.'
+    };
+
+    let westTravelDescription = 'You find a door that leads back to the three way crossroad.';
+
+    if (state.catQuestCompleted) {
+      westTravel = {
+        dest: 'room4',
+        travel_text: 'You follow the cat back through the fog to the crossroad.'
+      };
+
+      westTravelDescription += 'By it\'s side is the cat.';
+    }
+
 
     return {
       description: 'You are in the main room of a castle!',
@@ -353,20 +411,18 @@ let rooms = {
         },
         {
           name: 'West',
-          description: 'You find a door that leads back to the three way crossroad.',
-          value: {
-            dest: 'room4',
-            travel_text: 'You return back to the three way crossroad.'
-          }
+          description: westTravelDescription,
+          value: westTravel,
         },
-        {
-          name: 'North',
-          description: 'A cobblestone bridge leading North towards a small cottage',
-          value: {
-            dest: 'room7',
-            travel_text: 'You walk across the bridge towards the cottage.'
-          }
-        },
+        // impassable, one way from the north.
+        // {
+        //   name: 'North',
+        //   description: 'A cobblestone bridge leading North towards a small cottage',
+        //   value: {
+        //     dest: 'room7',
+        //     travel_text: 'You walk across the bridge towards the cottage.'
+        //   }
+        // },
         {
           name: 'South',
           description: 'A passage way deeper into the castle!',
