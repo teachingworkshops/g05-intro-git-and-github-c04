@@ -7,7 +7,7 @@ let chestOpen = false;
 let rooms = {
   /*
   roomTemp: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+    
     return {
       description: '',
       go: [
@@ -54,13 +54,10 @@ let rooms = {
   }*/
 
   startRoom: (state) => {
-    if (state.startRoomInit == undefined) {
-      console.log('You awaken in a forest clearing atop a pile of leaves.')
-      state.startRoomInit = true;
-    }
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
-      description: 'You are in a forest clearing with a pile of leaves in the middle', //does description ever get announced?
+      description: 'You are in a forest clearing with a pile of leaves in the middle',
+      initialDescription: 'You awaken in a forest clearing atop a pile of leaves.',
       go: [
         {
           name: 'North',
@@ -101,7 +98,7 @@ let rooms = {
   },
 
   room1: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: 'You are in a clearing with a forest shrine.',
       go: [
@@ -128,9 +125,10 @@ let rooms = {
   },
 
   room2: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: 'You find yourself in a cave.',
+      initialDesecription: 'You walk into the cave, and notice a draft coming from one of the walls.',
       go: [
         {
           name: 'North',
@@ -141,18 +139,27 @@ let rooms = {
           }
         },
         {
-          name: 'West',
+          name: 'Crack in the wall',
           description: 'Deeper into the cave.',
+          hidden: !state.caveCrackFound,
           value: {
             dest: 'room3',
-            travel_text: 'You stumble deep into the cave.'
+            travel_text: 'You squeeze through the crack.'
           }
         }
       ],
       look: [
         {
           name: 'Around',
-          value: 'You examine the cave. It is dark and damp. It looks like it goes deeper in.'
+          value: 'You examine the cave. It is dark and damp. You feel a draft coming from the wall'
+        },
+        {
+          name: 'Draft source',
+          description: 'Look at the wall the draft is coming from',
+          value: (state) => {
+            state.caveCrackFound = true;
+            console.log('Searching for the source of the draft, you find a crack in the wall. You think you might be able to fit through.')
+          }
         }
       ]
     }
@@ -161,7 +168,7 @@ let rooms = {
 
 
   room3: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: 'You are deeper into the cave. You find a torch lit room',
       go: [
@@ -184,12 +191,12 @@ let rooms = {
           value: () => {
             if (!chestOpen) {
 
-              
+
               console.log('The chest is unlocked. You found gold inside! ')
               chestOpen = true;
               addItemToInventory(loot.gold, state);
             }
-            else{
+            else {
               console.log('You stare at the empty open chest')
             }
           }
@@ -199,7 +206,7 @@ let rooms = {
   },
 
   room4: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: 'You find yourself in a three way fork in the path.',
       go: [
@@ -238,7 +245,7 @@ let rooms = {
   },
 
   room5: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: 'A sunny field.',
       go: [
@@ -277,7 +284,7 @@ let rooms = {
   },
 
   room6: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: '',
       go: [
@@ -300,7 +307,7 @@ let rooms = {
   },
 
   room7: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: 'A cottage on a hill',
       go: [
@@ -314,6 +321,7 @@ let rooms = {
         },
         {
           name: 'South',
+          // maybe move this character to room 4 and have the puzzle there be getting ingredient from farmer
           description: 'A witch offers a familiar to guide you closer to your destination.',
           value: {
             dest: 'room8',
@@ -331,7 +339,7 @@ let rooms = {
   },
 
   room8: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: 'You are in the main room of a castle!',
       go: [
@@ -378,7 +386,7 @@ let rooms = {
   },
 
   room9: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: '',
       go: [
@@ -417,7 +425,7 @@ let rooms = {
   },
 
   room10: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: 'The castle rampart',
       go: [
@@ -448,7 +456,7 @@ let rooms = {
   },
 
   room11: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: 'A small office for the castle commander.',
       go: [
@@ -479,7 +487,7 @@ let rooms = {
   },
 
   room12: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: '',
       go: [
@@ -510,7 +518,7 @@ let rooms = {
   },
 
   room13: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: 'A small road.',
       go: [
@@ -541,7 +549,7 @@ let rooms = {
   },
 
   room14: (state) => {
-    console.log('') //Adds a spacing to make the text easier to read
+
     return {
       description: '',
       go: [
@@ -575,6 +583,7 @@ function handleBandits(state) {
   } else {
     console.log("You have no gold to give. The bandits attack!");
     console.log("Game Over");
+    Deno && Deno.exit();
     process.exit();
   }
 }

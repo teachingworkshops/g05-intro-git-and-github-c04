@@ -1,16 +1,24 @@
 import { select, Separator } from '@inquirer/prompts';
 import rooms from './rooms.js';
-import { go, look, viewInventory } from './actions.js';
+import { go, look, viewInventory, printDescription } from './actions.js';
 
 // track what rooms have been seen for easy text variation?
 let state = {
   currentRoom: 'startRoom',
-  inventory: []
+  inventory: [],
+  seenRooms: []
 };
 
 async function gameLoop() {
   while (true) {
     let instance = await rooms[state.currentRoom](state);
+    console.log(''); //Adds a spacing to make the text easier to read
+
+    // should we only print this after traveling?
+    printDescription(instance, state);
+    state.seenRooms[state.currentRoom] = true;
+
+    console.log('');
 
     let action = await select({
       message: 'What will you do?',
@@ -44,9 +52,10 @@ async function gameLoop() {
   }
 }
 
-try {
-  await gameLoop();
-} catch (err) {
+
+gameLoop().catch(reason => {
   console.log("Error, stopping program.");
+  console.error(reason);
+  Deno && Deno.exit(1);
   process.exit(1);
-}
+});

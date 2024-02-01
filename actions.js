@@ -1,4 +1,5 @@
 import { select, Separator } from '@inquirer/prompts';
+import rooms from './rooms.js';
 
 export async function look(instance, state) {
   let item = await select({
@@ -28,29 +29,25 @@ export async function go(instance, state) {
   let movement = await select({
     message: 'Where are you going',
     choices: [
-      ...instance.go,
+      ...instance.go.filter(item => !item.hidden),
       new Separator(),
       { name: 'Cancel', value: 'cancel' }
     ]
   })
 
-  if (movement === 'cancel') return;
+  if (movement === 'cancel') return false;
 
   console.log(movement.travel_text);
 
   state.currentRoom = movement.dest;
+  return true;
 }
 
-export async function handleAction(action, instance, state) {
-  switch (action) {
-    case 'look':
-      await look(instance, state);
-      break;
-    case 'go':
-      await go(instance, state);
-      break;
-    default:
-      console.error('unknown action: ' + action);
+export function printDescription(instance, state) {
+  if (!state.seenRooms[state.currentRoom] && instance.initialDescription != undefined) {
+    console.log(instance.initialDescription);
+  } else if (instance.description != undefined) {
+    console.log(instance.description);
   }
 }
 
