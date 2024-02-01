@@ -5,6 +5,7 @@ Choose your own text adventure game using the arrow keys to navigate throughout 
 Mason Osborn, Brandan Nguyen, Oleg Zakovyrkin, Gloria Solovey
 
 ## Running
+Download latest release and run the executable in a terminal or:
 1. Install [node.js](https://nodejs.org/)
 2. Clone the repository
 3. run npm install in the repo folder to install the dependencies
