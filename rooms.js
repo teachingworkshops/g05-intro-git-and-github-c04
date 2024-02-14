@@ -629,7 +629,7 @@ let rooms = {
   }
 
 };
-
+// C01
 //Bandits attack. Removes gold from inventory if gold > 0
 function handleBandits(state) {
   const goldIndex = state.inventory.findIndex(item => item.name === 'Gold');
