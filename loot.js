@@ -11,7 +11,11 @@ let loot = {
   },
   sword: {
     name: 'Sword',
-    description: 'sword'
+    description: 'Short Sword.'
+  },
+  swordKey: {
+    name: 'Key',
+    description: 'An old key.'
   }
 };
 
