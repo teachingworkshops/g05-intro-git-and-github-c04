@@ -629,14 +629,18 @@ let rooms = {
   }
 
 };
-
+// C01
 //Bandits attack. Removes gold from inventory if gold > 0
 function handleBandits(state) {
   const goldIndex = state.inventory.findIndex(item => item.name === 'Gold');
+  const Weapon = state.inventory.findIndex(item => item.name === 'Sword' );
   if (goldIndex !== -1) {
     state.inventory.splice(goldIndex, 1);
     console.log("You give one gold to the bandits. They let you go.");
     console.log('You find a caravan and return home safely.\n\nYou win!');
+  } else if (Weapon !== -1) {
+    console.log("The bandits are about to attack, defend yourself!")
+
   } else {
     console.log("You have no gold to give. The bandits attack!");
     console.log("Game Over");

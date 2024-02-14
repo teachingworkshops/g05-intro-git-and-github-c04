@@ -17,3 +17,8 @@ Download latest release and run the executable in a terminal or:
 
 ## Compiling
 Because deno allows for compiling executables, we can instead run `deno compile` with the same flags, and create a single file executable. The script [build_release.sh](build_release.sh) uses the `--target` flag to compile the program for both windows and linux.
+
+### Contributors
+- Max Sullivan
+- Raffi Marzella
+- Aria Sanderson
