@@ -8,8 +8,15 @@ let loot = {
   cream: {
     name: 'Cream',
     description: 'Bottle of Cream. Loved by cats.'
+  },
+  sword: {
+    name: 'Sword',
+    description: 'Short Sword.'
+  },
+  swordKey: {
+    name: 'Key',
+    description: 'An old key.'
   }
-  //More loot here
 };
 
 export default loot;

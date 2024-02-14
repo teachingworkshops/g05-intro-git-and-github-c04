@@ -1,6 +1,8 @@
 import { addItemToInventory } from './actions.js';
 import loot from './loot.js';
-let chestOpen = false;
+let goldChestOpen = false;
+let swordKeyPickup = false;
+let swordChestOpen = false;
 
 
 
@@ -189,15 +191,15 @@ let rooms = {
         {
           name: 'Chest',
           value: () => {
-            if (!chestOpen) {
+            if (!goldChestOpen) {
 
 
               console.log('The chest is unlocked. You found gold inside! ')
-              chestOpen = true;
+              goldChestOpen = true;
               addItemToInventory(loot.gold, state);
             }
             else {
-              console.log('You stare at the empty open chest')
+              console.log('You stare at the empty open chest.')
             }
           }
         }
@@ -475,7 +477,27 @@ let rooms = {
       look: [
         {
           name: 'Around',
-          value: 'You are in the armory of the castle!'
+          value: 'You are in the castle armory! A chest sits against the wall.'
+        },
+        {
+          name: 'Chest',
+            value: () => {
+              if (!swordChestOpen) {
+                console.log(swordKeyPickup)
+                if (swordKeyPickup) {
+                  console.log('You use the key to unlock the chest.')
+                  console.log('You found a sword!')
+                  addItemToInventory(loot.sword, state);
+                  swordChestOpen = true;
+                }
+                else {
+                  console.log('The chest is locked shut.')
+                }
+              }
+              else {
+                console.log('You stare at the empty chest.')
+              }
+          }
         }
       ]
     }
@@ -569,6 +591,19 @@ let rooms = {
         {
           name: 'Around',
           value: 'A prison dungeon. The cells are currently empty.'
+        },
+        {
+          name: 'Key',
+          value: () => {
+            if (!swordKeyPickup) {
+              console.log('You find a key on a table.')
+              addItemToInventory(loot.swordKey, state);
+              swordKeyPickup = true;
+            }
+            else {
+              console.log('You see nothing on the table.')
+            }
+          }
         }
       ]
     }
@@ -629,15 +664,31 @@ let rooms = {
   }
 
 };
-
+// C01
 //Bandits attack. Removes gold from inventory if gold > 0
 function handleBandits(state) {
   const goldIndex = state.inventory.findIndex(item => item.name === 'Gold');
-  if (goldIndex !== -1) {
+  const Weapon = state.inventory.findIndex(item => item.name === 'Sword' );
+  if (Weapon !== -1 && goldIndex === -1) {
+    console.log("The bandits attack you!");
+    console.log("You defend yourself with the sword.\n\nYou survive!");
+    Deno && Deno.exit();
+    process.exit();
+  } 
+  else if (Weapon !== -1 && goldIndex !== -1) {
+    console.log("The bandits attack you!");
+    console.log("You defend yourself with the sword and take all the gold for youself!\n\nYou win!");
+    Deno && Deno.exit();
+    process.exit();
+  }
+  else if (Weapon === -1 && goldIndex !== -1) {
     state.inventory.splice(goldIndex, 1);
     console.log("You give one gold to the bandits. They let you go.");
     console.log('You find a caravan and return home safely.\n\nYou win!');
-  } else {
+    Deno && Deno.exit();
+    process.exit();
+  } 
+  else {
     console.log("You have no gold to give. The bandits attack!");
     console.log("Game Over");
     Deno && Deno.exit();
